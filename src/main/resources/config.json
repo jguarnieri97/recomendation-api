@@ -1,0 +1,16 @@
+{
+	"ELECTRICIAN": [
+		"bad wire",
+		"untidy wire",
+		"failed light tube"
+	],
+	"CONTRACTOR": [
+		"humedity",
+		"unpainted",
+		"unplastered"
+	],
+	"CLEANING": [
+		"dirty space",
+		"unclean window"
+	]
+}
