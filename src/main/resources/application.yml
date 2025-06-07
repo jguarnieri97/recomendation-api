@@ -20,6 +20,6 @@ server:
 logging:
   level:
     root: INFO
-    ar.edu.unlam.tpi.recomendation: DEBUG
+    ar.edu.unlam.tpi.recomendation_api: DEBUG
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %msg%n"
