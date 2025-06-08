@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import ar.edu.unlam.tpi.recomendation_api.models.RecommendationEntity;
 import ar.edu.unlam.tpi.recomendation_api.dto.request.RecommendationRequest;
 import ar.edu.unlam.tpi.recomendation_api.dto.response.RecommendationResponse;
+import ar.edu.unlam.tpi.recomendation_api.exceptions.NotFoundException;
 import ar.edu.unlam.tpi.recomendation_api.persistence.dao.RecommendationDAO;
 import ar.edu.unlam.tpi.recomendation_api.service.RecommendationService;
 import ar.edu.unlam.tpi.recomendation_api.utils.CategoryConfig;
@@ -40,9 +41,9 @@ public class RecommendationServiceImpl implements RecommendationService {
         List<RecommendationEntity> toSave = request.getTags().stream()
                 .peek(tag -> log.debug(" Revisando tag: {} con probabilidad {}", tag.getTagName(), tag.getProbability()))
                 .filter(tag -> {
-                    boolean pasa = tag.getProbability() >= threshold;
-                    log.debug(" Pasa threshold {}: {}", threshold, pasa);
-                    return pasa;
+                    boolean isAboveThreshold = tag.getProbability() >= threshold;
+                    log.debug(" Pasa threshold {}: {}", threshold, isAboveThreshold);
+                    return isAboveThreshold;
                 })
                 .map(tag -> {
                     Optional<String> categoria = config.getCategoryByTag(tag.getTagName());
@@ -64,14 +65,20 @@ public class RecommendationServiceImpl implements RecommendationService {
     
 
     @Override
-    public List<RecommendationResponse> getRecommendations(Long applicantId, int limit) {
-        Pageable pageable = PageRequest.of(0, limit);
-        return dao.findByApplicantIdOrderByCreatedAtDesc(applicantId, pageable)
-                .stream()
-                .map(rec -> {
-                    String cat = config.getCategoryByTag(rec.getTag()).orElse("UNKNOWN");
-                    return converter.convertToResponse(rec, cat);
-                })
-                .toList();
+public List<RecommendationResponse> getRecommendations(Long applicantId, int limit) {
+    Pageable pageable = PageRequest.of(0, limit);
+    List<RecommendationEntity> entities = dao.findByApplicantIdOrderByCreatedAtDesc(applicantId, pageable);
+
+    if (entities.isEmpty()) {
+        throw new NotFoundException("No recommendations found for applicantId: " + applicantId);
     }
+
+    return entities.stream()
+            .map(rec -> {
+                String cat = config.getCategoryByTag(rec.getTag()).orElse("UNKNOWN");
+                return converter.convertToResponse(rec, cat);
+            })
+            .toList();
+}
+
 }
