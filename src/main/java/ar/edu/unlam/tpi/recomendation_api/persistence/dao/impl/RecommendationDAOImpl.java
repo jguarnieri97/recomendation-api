@@ -1,5 +1,5 @@
 package ar.edu.unlam.tpi.recomendation_api.persistence.dao.impl;
 
-public class RecomendationDAOImpl {
+public class RecommendationDAOImpl {
     
 }
