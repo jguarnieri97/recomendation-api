@@ -34,13 +34,20 @@ public class DataInitializer implements CommandLineRunner {
                 .build();
 
         RecommendationEntity rec3 = RecommendationEntity.builder()
-                .applicantId(2L)
+                .applicantId(1L)
                 .probability(0.99)
                 .tag("failed light tube")
                 .createdAt(LocalDateTime.of(2025, 6, 6, 17, 15))
                 .build();
 
-        recommendationDAO.saveAll(Arrays.asList(rec1, rec2, rec3));
+                RecommendationEntity rec4 = RecommendationEntity.builder()
+                .applicantId(2L)
+                .probability(0.92)
+                .tag("failed light tube")
+                .createdAt(LocalDateTime.of(2025, 6, 6, 17, 15))
+                .build();
+
+        recommendationDAO.saveAll(Arrays.asList(rec1, rec2, rec3, rec4));
 
         log.info("✅ Datos de recomendaciones inicializados correctamente");
     }
