@@ -14,11 +14,11 @@ import lombok.RequiredArgsConstructor;
 import ar.edu.unlam.tpi.recomendation_api.models.RecommendationEntity;
 import ar.edu.unlam.tpi.recomendation_api.dto.request.RecommendationRequest;
 import ar.edu.unlam.tpi.recomendation_api.dto.response.RecommendationResponse;
-import ar.edu.unlam.tpi.recomendation_api.exceptions.NotFoundException;
 import ar.edu.unlam.tpi.recomendation_api.persistence.dao.RecommendationDAO;
 import ar.edu.unlam.tpi.recomendation_api.service.RecommendationService;
 import ar.edu.unlam.tpi.recomendation_api.utils.CategoryConfig;
 import ar.edu.unlam.tpi.recomendation_api.utils.RecommendationConverter;
+import ar.edu.unlam.tpi.recomendation_api.utils.RecommendationFallbackUtils;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -31,7 +31,8 @@ public class RecommendationServiceImpl implements RecommendationService {
     private final RecommendationDAO dao;
     private final CategoryConfig config;
     private final RecommendationConverter converter;
-
+    private final RecommendationFallbackUtils fallbackUtils;
+    
     @Value("${recommendation.threshold:0.7}")
     private double threshold;
     @Override
@@ -65,20 +66,23 @@ public class RecommendationServiceImpl implements RecommendationService {
     
 
     @Override
-public List<RecommendationResponse> getRecommendations(Long applicantId, int limit) {
-    Pageable pageable = PageRequest.of(0, limit);
-    List<RecommendationEntity> entities = dao.findByApplicantIdOrderByCreatedAtDesc(applicantId, pageable);
-
-    if (entities.isEmpty()) {
-        throw new NotFoundException("No recommendations found for applicantId: " + applicantId);
+    public List<RecommendationResponse> getRecommendations(Long applicantId, int limit) {
+        Pageable pageable = PageRequest.of(0, limit);
+        List<RecommendationEntity> entities = dao.findByApplicantIdOrderByCreatedAtDesc(applicantId, pageable);
+    
+        if (entities.isEmpty()) {
+            log.warn("No se encontraron recomendaciones. Se crea una por defecto para applicantId {}", applicantId);
+            RecommendationEntity fallback = fallbackUtils.createDefaultCleaningRecommendation(applicantId);
+            entities = List.of(fallback);
+        }
+    
+        return entities.stream()
+                .map(rec -> {
+                    String cat = config.getCategoryByTag(rec.getTag()).orElse("UNKNOWN");
+                    return converter.convertToResponse(rec, cat);
+                })
+                .toList();
     }
-
-    return entities.stream()
-            .map(rec -> {
-                String cat = config.getCategoryByTag(rec.getTag()).orElse("UNKNOWN");
-                return converter.convertToResponse(rec, cat);
-            })
-            .toList();
-}
+    
 
 }
