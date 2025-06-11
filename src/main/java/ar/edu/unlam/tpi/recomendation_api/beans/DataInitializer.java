@@ -22,7 +22,7 @@ public class DataInitializer implements CommandLineRunner {
         RecommendationEntity rec1 = RecommendationEntity.builder()
                 .applicantId(1L)
                 .probability(0.95)
-                .tag("dirty space")
+                .tag("humedity")
                 .createdAt(LocalDateTime.of(2025, 6, 7, 12, 30))
                 .build();
 
@@ -33,21 +33,14 @@ public class DataInitializer implements CommandLineRunner {
                 .createdAt(LocalDateTime.of(2025, 6, 7, 12, 45))
                 .build();
 
-        RecommendationEntity rec3 = RecommendationEntity.builder()
-                .applicantId(1L)
-                .probability(0.99)
-                .tag("failed light tube")
-                .createdAt(LocalDateTime.of(2025, 6, 6, 17, 15))
-                .build();
-
-                RecommendationEntity rec4 = RecommendationEntity.builder()
+        RecommendationEntity rec4 = RecommendationEntity.builder()
                 .applicantId(2L)
                 .probability(0.92)
                 .tag("failed light tube")
                 .createdAt(LocalDateTime.of(2025, 6, 6, 17, 15))
                 .build();
 
-        recommendationDAO.saveAll(Arrays.asList(rec1, rec2, rec3, rec4));
+        recommendationDAO.saveAll(Arrays.asList(rec1, rec2, rec4));
 
         log.info("✅ Datos de recomendaciones inicializados correctamente");
     }
