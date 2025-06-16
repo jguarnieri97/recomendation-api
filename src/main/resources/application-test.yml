@@ -8,18 +8,15 @@ spring:
     driver-class-name: org.h2.Driver
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
     show-sql: true
+  sql:
+    init:
+      schema-locations: classpath:init-test.sql
+      mode: always
   h2:
       console:
         enabled: true
         path: /h2-console
 server:
   port: 8089
-
-logging:
-  level:
-    root: INFO
-    ar.edu.unlam.tpi.recomendation_api: DEBUG
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %msg%n"
