@@ -5,14 +5,16 @@ import ar.edu.unlam.tpi.recomendation_api.persistence.dao.RecommendationDAO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
-@Slf4j
+@ConditionalOnProperty(name = "spring.profiles.active", havingValue = "test", matchIfMissing = true)
 public class DataInitializer implements CommandLineRunner {
 
     private final RecommendationDAO recommendationDAO;
