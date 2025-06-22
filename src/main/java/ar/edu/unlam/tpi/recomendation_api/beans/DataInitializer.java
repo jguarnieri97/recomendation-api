@@ -21,28 +21,28 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        RecommendationEntity rec1 = RecommendationEntity.builder()
+        RecommendationEntity contractor1 = RecommendationEntity.builder()
                 .applicantId(1L)
                 .probability(0.95)
-                .tag("humedity")
+                .tag("roof_repair")
                 .createdAt(LocalDateTime.of(2025, 6, 7, 12, 30))
                 .build();
 
-        RecommendationEntity rec2 = RecommendationEntity.builder()
+        RecommendationEntity electrician1 = RecommendationEntity.builder()
                 .applicantId(1L)
                 .probability(0.90)
-                .tag("untidy wire")
+                .tag("electrical_wiring_repair")
                 .createdAt(LocalDateTime.of(2025, 6, 7, 12, 45))
                 .build();
 
-        RecommendationEntity rec4 = RecommendationEntity.builder()
+        RecommendationEntity cleaning1 = RecommendationEntity.builder()
                 .applicantId(2L)
                 .probability(0.92)
-                .tag("failed light tube")
+                .tag("office_cleaning")
                 .createdAt(LocalDateTime.of(2025, 6, 6, 17, 15))
                 .build();
 
-        recommendationDAO.saveAll(Arrays.asList(rec1, rec2, rec4));
+        recommendationDAO.saveAll(Arrays.asList(contractor1, electrician1, cleaning1));
 
         log.info("✅ Datos de recomendaciones inicializados correctamente");
     }

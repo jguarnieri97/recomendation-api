@@ -1,16 +1,26 @@
 {
-	"ELECTRICIAN": [
-		"bad wire",
-		"untidy wire",
-		"failed light tube"
-	],
 	"CONTRACTOR": [
-		"humedity",
-		"unpainted",
-		"unplastered"
+	  "roof_repair",
+	  "wall_repair",
+	  "painting",
+	  "infrastructure_repair",
+	  "infrastructure_build",
+	  "unplastered"
+	],
+	"ELECTRICIAN": [
+	  "electrical_wiring_repair",
+	  "electrical_maintenance",
+	  "light_repair",
+	  "light_systems",
+	  "electrical_failures",
+	  "electrical_wiring",
+	  "power_outlets"
 	],
 	"CLEANING": [
-		"dirty space",
-		"unclean window"
+	  "office_cleaning",
+	  "window_cleaning",
+	  "floor_cleaning",
+	  "post_construct_cleaning",
+	  "sanitary_cleaning"
 	]
-}
+  }
