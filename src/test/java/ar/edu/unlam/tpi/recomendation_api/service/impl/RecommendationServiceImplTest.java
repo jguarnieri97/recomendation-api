@@ -1,4 +1,4 @@
-package ar.edu.unlam.tpi.recomendation_api.service;
+package ar.edu.unlam.tpi.recomendation_api.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -22,7 +22,6 @@ import ar.edu.unlam.tpi.recomendation_api.Utils.RecommendationDataHelper;
 import ar.edu.unlam.tpi.recomendation_api.persistence.dao.RecommendationDAO;
 import ar.edu.unlam.tpi.recomendation_api.utils.CategoryConfig;
 import ar.edu.unlam.tpi.recomendation_api.utils.RecommendationConverter;
-import ar.edu.unlam.tpi.recomendation_api.service.impl.RecommendationServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
 class RecommendationServiceImplTest {
@@ -50,7 +49,7 @@ class RecommendationServiceImplTest {
         // Given
         var request = RecommendationDataHelper.buildValidRequest();
         var entity = RecommendationDataHelper.buildEntity();
-        when(config.getCategoryByTag("dirty space")).thenReturn(Optional.of("CLEANING"));
+        when(config.getCategoryByTag("office_cleaning")).thenReturn(Optional.of("CLEANING"));
         when(converter.convertToEntity(1L, request.getTags().get(0))).thenReturn(entity);
 
         // When
@@ -68,7 +67,7 @@ class RecommendationServiceImplTest {
         var response = RecommendationDataHelper.buildResponse();
         when(dao.findByApplicantIdOrderByCreatedAtDesc(1L, PageRequest.of(0, 3)))
             .thenReturn(List.of(entity));
-        when(config.getCategoryByTag("dirty space")).thenReturn(Optional.of("CLEANING"));
+        when(config.getCategoryByTag("office_cleaning")).thenReturn(Optional.of("CLEANING"));
         when(converter.convertToResponse(entity, "CLEANING")).thenReturn(response);
 
         // When
@@ -77,7 +76,7 @@ class RecommendationServiceImplTest {
         // Then
         assertNotNull(result);
         assertEquals(1, result.size());
-        assertEquals("dirty space", result.get(0).getLabel());
+        assertEquals("office_cleaning", result.get(0).getLabel());
         verify(dao).findByApplicantIdOrderByCreatedAtDesc(1L, PageRequest.of(0, 3));
     }
 }
