@@ -17,7 +17,7 @@ public class RecommendationFallbackUtils {
     public RecommendationEntity createDefaultCleaningRecommendation(Long applicantId) {
         RecommendationEntity entity = RecommendationEntity.builder()
                 .applicantId(applicantId)
-                .tag("dirty space")
+                .tag("office_cleaning")
                 .probability(1.0)
                 .createdAt(LocalDateTime.now())
                 .build();

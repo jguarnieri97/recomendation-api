@@ -15,7 +15,7 @@ public class RecommendationDataHelper {
     public static RecommendationRequest buildValidRequest() {
         TagRequest tag = new TagRequest();
         tag.setProbability(0.95);
-        tag.setTagName("dirty space");
+        tag.setTagName("office_cleaning");
 
         RecommendationRequest request = new RecommendationRequest();
         request.setApplicantId(1L);
@@ -28,7 +28,7 @@ public class RecommendationDataHelper {
         entity.setId(1L);
         entity.setApplicantId(1L);
         entity.setProbability(0.95);
-        entity.setTag("dirty space");
+        entity.setTag("office_cleaning");
         entity.setCreatedAt(LocalDateTime.now());
         return entity;
     }
@@ -37,7 +37,7 @@ public class RecommendationDataHelper {
         RecommendationResponse response = new RecommendationResponse();
         response.setApplicantId(1L);
         response.setCategory("CLEANING");
-        response.setLabel("dirty space");
+        response.setLabel("office_cleaning");
         return response;
     }
 }
